@@ -1,118 +1,209 @@
 
-# 💰 Finance Tracker
+# 💰 Finance Data Processing & Access Control Backend
 
-A modern web application to track income, expenses, and manage personal finances efficiently. Built with a clean UI and real-time data handling to help users stay in control of their money.
+A backend system built for managing financial records with role-based access control and dashboard analytics.
 
----
-
-## 🚀 Features
-
-- 📊 Track income and expenses
-- 📅 Date-wise transaction management
-- 📈 Financial overview dashboard
-- 🔐 User authentication (secure login/signup)
-- ☁️ Real-time database integration
-- 📱 Responsive design (works on mobile & desktop)
+This project was developed as part of a backend engineering assignment to demonstrate API design, data modeling, access control, and clean backend architecture.
 
 ---
 
-## 🛠️ Tech Stack
+## 🚀 Tech Stack
 
-- **Frontend:** Next.js, React, Tailwind CSS  
-- **Backend:** Firebase Realtime Database  
-- **Authentication:** Firebase Auth  
-- **Deployment:** (Add if deployed - Netlify / Vercel)
+- **Framework:** NestJS
+- **ORM:** Prisma
+- **Database:** Neon (PostgreSQL)
+- **Language:** TypeScript
+- **Architecture:** Modular (Controller → Service → Prisma)
 
 ---
 
-## 📦 Installation
+## 📌 Features
 
-1. Clone the repository
+### 👤 User & Role Management
+- Create and manage users
+- Assign roles: `Viewer`, `Analyst`, `Admin`
+- Control user status (active/inactive)
+- Role-based permissions enforced at backend level
+
+---
+
+### 💳 Financial Records Management
+- Create financial records
+- Update & delete records
+- View all records
+- Filter records by:
+  - Date
+  - Category
+  - Type (Income / Expense)
+
+---
+
+### 📊 Dashboard Summary APIs
+- Total Income
+- Total Expenses
+- Net Balance
+- Category-wise breakdown
+- Recent transactions
+- Monthly trends
+
+---
+
+### 🔐 Role-Based Access Control (RBAC)
+
+| Role    | Permissions |
+|--------|------------|
+| Viewer | Read-only access |
+| Analyst | Read + analytics access |
+| Admin | Full access (CRUD + user management) |
+
+---
+
+### ✅ Validation & Error Handling
+- DTO-based validation using class-validator
+- Proper HTTP status codes
+- Meaningful error messages
+- Protection against invalid operations
+
+---
+
+### 💾 Data Persistence
+- PostgreSQL database hosted on Neon
+- Prisma used for schema modeling and queries
+
+---
+
+## 📁 Project Structure
+
+```
+
+src/
+│
+├── auth/              # Authentication logic (if implemented)
+├── users/             # User management module
+├── records/           # Financial records module
+├── dashboard/         # Summary & analytics APIs
+├── common/            # Guards, decorators, utilities
+├── prisma/            # Prisma schema & config
+│
+└── main.ts
+
+````
+
+---
+
+## 🔑 API Overview
+
+### User APIs
+- `POST /users` → Create user
+- `GET /users` → Get all users
+- `PATCH /users/:id` → Update user
+- `DELETE /users/:id` → Delete user
+
+---
+
+### Records APIs
+- `POST /records` → Create record
+- `GET /records` → Get all records
+- `GET /records?type=income&category=food` → Filter records
+- `PATCH /records/:id` → Update record
+- `DELETE /records/:id` → Delete record
+
+---
+
+### Dashboard APIs
+- `GET /dashboard/summary` → Income, expenses, balance
+- `GET /dashboard/category` → Category-wise totals
+- `GET /dashboard/trends` → Monthly trends
+- `GET /dashboard/recent` → Recent activity
+
+---
+
+## 🔐 Access Control Implementation
+
+- Implemented using **Guards & Role Decorators**
+- Middleware checks user role before allowing access
+- Unauthorized actions return `403 Forbidden`
+
+---
+
+## ⚙️ Setup Instructions
+
+### 1. Clone Repo
 ```bash
 git clone https://github.com/Abhishek-Jatav/finance-tracker.git
 cd finance-tracker
 ````
 
-2. Install dependencies
+### 2. Install Dependencies
 
 ```bash
 npm install
 ```
 
-3. Run the development server
+### 3. Setup Environment Variables
 
-```bash
-npm run dev
-```
-
-4. Open in browser
-
-```
-http://localhost:3000
-```
-
----
-
-## 🔑 Environment Variables
-
-Create a `.env.local` file and add:
+Create `.env` file:
 
 ```env
-NEXT_PUBLIC_FIREBASE_API_KEY=your_key
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_domain
-NEXT_PUBLIC_FIREBASE_DATABASE_URL=your_db_url
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_bucket
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+DATABASE_URL=your_neon_database_url
+PORT=3000
+```
+
+### 4. Run Prisma
+
+```bash
+npx prisma generate
+npx prisma migrate dev
+```
+
+### 5. Start Server
+
+```bash
+npm run start:dev
 ```
 
 ---
 
-## 📁 Folder Structure
+## 📦 Assumptions
 
-```
-/app        → Pages & routing (Next.js App Router)
-/components → Reusable UI components
-/firebase   → Firebase config & functions
-/public     → Static assets
-```
+* Authentication may be simplified or mocked
+* Roles are statically defined
+* Only backend logic is the focus (frontend optional)
 
 ---
 
-## 📸 Screenshots
+## ⚖️ Trade-offs
 
-*Add screenshots here (very important for resume 👇)*
-
----
-
-## 🌐 Live Demo
-
-*Add your deployed link here*
+* Used Prisma for faster development vs raw SQL flexibility
+* RBAC implemented at application level (not DB level)
+* Limited authentication to keep focus on core backend logic
 
 ---
 
-## 🤝 Contributing
+## 🚧 Possible Improvements
 
-Contributions are welcome!
-
-1. Fork the repo
-2. Create a new branch (`feature/your-feature`)
-3. Commit your changes
-4. Push and open a Pull Request
+* JWT Authentication
+* Pagination for large datasets
+* Unit & integration testing
+* Swagger API documentation
+* Rate limiting
+* Caching for dashboard APIs
 
 ---
 
-## 📄 License
+## 🌐 Live Demo / API
 
-This project is open-source and available under the MIT License.
+👉 [https://finance-tracker-abhishek-jatav.netlify.app/](https://finance-tracker-abhishek-jatav.netlify.app/)
 
 ---
 
 ## 👨‍💻 Author
 
-**Abhishek**
-
-* GitHub: [https://github.com/Abhishek-Jatav](https://github.com/Abhishek-Jatav)
+**Abhishek Jatav**
 
 ---
+
+## 📜 License
+
+This project is for assessment purposes only.
+
